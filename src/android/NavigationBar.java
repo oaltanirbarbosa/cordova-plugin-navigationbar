@@ -162,6 +162,12 @@ public class NavigationBar extends CordovaPlugin {
             return true;
         }
 
+        if ("height".equals(action)) {
+            float navigationBarHeight = getNavigationBarHeight();
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, navigationBarHeight));
+            return true;
+        }
+
         return false;
     }
 
@@ -197,5 +203,15 @@ public class NavigationBar extends CordovaPlugin {
                 }
             }
         }
+    }
+
+    private float getNavigationBarHeight() {
+        float navigationBarHeight = 0;
+        int resourceId = this.cordova.getActivity().getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            float scaleRatio = this.cordova.getActivity().getResources().getDisplayMetrics().density;
+            navigationBarHeight = this.cordova.getActivity().getResources().getDimension(resourceId) / scaleRatio;
+        }
+        return navigationBarHeight;
     }
 }
